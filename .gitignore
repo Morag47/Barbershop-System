@@ -1,0 +1,60 @@
+# ============================================================
+# SISTEMA DE GESTIÓN DE BARBERÍA - GIT IGNORE
+# Autor: Andrés Felipe Mora
+# ============================================================
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment variables (CRÍTICO: Nunca subir credenciales)
+.env
+.env.local
+.env.production
+*.env
+!.env.example
+
+# Database backups y dumps
+*.sql.backup
+dump.sql
+backup_*.sql
+
+# Build outputs
+dist/
+build/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# IDE y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+~$*
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Production
+/backend/uploads/
+/frontend/dist/
+
+# Archivos de documentación temporal
+estructura.txt
+notas_*.txt
