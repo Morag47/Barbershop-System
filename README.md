@@ -79,8 +79,8 @@ Sistema completo de gestión de citas, empleados, servicios y reportes para barb
 ### 1. Clonar el repositorio
 
 ```bash
-git clone <tu-repositorio>
-cd barberia-app
+git clone https://github.com/Morag47/Barbershop-System.git
+cd Barbershop-System
 ```
 
 ### 2. Configurar la Base de Datos
@@ -463,12 +463,35 @@ npm run preview    # Vista previa de producción
 
 ## 📄 Licencia
 
-Este proyecto es de código abierto y está disponible para uso educativo y comercial.
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+Este proyecto está licenciado bajo **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International**.
+
+### ¿Qué significa esto?
+
+✅ **Puedes:**
+- Usar el software con fines educativos y personales
+- Modificar y adaptar el código
+- Compartir tus modificaciones
+
+❌ **NO puedes:**
+- Usar el software con fines comerciales sin permiso
+- Vender este software o servicios basados en él
+- Implementarlo en negocios sin autorización
+
+📧 **Para uso comercial**, contactar: **andres.moagui@gmail.com**
+
+Ver licencia completa en [LICENSE](./LICENSE)
 
 ## 👨‍💻 Autor
 
-Desarrollado como proyecto de práctica de Node.js y React.
+**Andrés Felipe Mora**  
+📧 Email: andres.moagui@gmail.com  
+🔗 GitHub: [@Morag47](https://github.com/Morag47)
+
+Desarrollado con ❤️ usando Node.js, Express, React y MySQL.
 
 ---
 
-**¡Gracias por usar el Sistema de Gestión de Citas para Barbería!** 💈✂️
+**Sistema de Gestión de Barbería** - © 2025 Andrés Felipe Mora  
+Todos los derechos reservados bajo licencia CC BY-NC-SA 4.0 💈✂️
