@@ -4,6 +4,9 @@ node_modules/
 # Environment variables
 .env
 
+# Uploads (fotos de empleados)
+uploads/
+
 # Logs
 logs
 *.log

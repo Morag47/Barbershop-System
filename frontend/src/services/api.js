@@ -39,7 +39,16 @@ export const empleadosAPI = {
     obtenerTodosAdmin: () => api.get('/empleados/admin/todos'),
     crear: (empleado) => api.post('/empleados', empleado),
     actualizar: (id, empleado) => api.put(`/empleados/${id}`, empleado),
-    eliminar: (id) => api.delete(`/empleados/${id}`)
+    eliminar: (id) => api.delete(`/empleados/${id}`),
+    subirFoto: (formData) => {
+        const token = localStorage.getItem('token');
+        return axios.post(`${API_URL}/admin/empleados/subir-foto`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+    }
 };
 
 export const horariosAPI = {

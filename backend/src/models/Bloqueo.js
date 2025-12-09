@@ -12,6 +12,15 @@ const Bloqueo = {
         return rows;
     },
 
+    // Obtener un bloqueo por ID
+    async obtenerPorId(id) {
+        const [rows] = await pool.query(
+            'SELECT b.*, e.nombre as empleado_nombre FROM bloqueos b INNER JOIN empleados e ON b.empleado_id = e.id WHERE b.id = ?',
+            [id]
+        );
+        return rows[0];
+    },
+
     // Obtener bloqueos activos (futuras o presentes)
     async obtenerActivos() {
         const [rows] = await pool.query(`
@@ -70,6 +79,14 @@ const Bloqueo = {
             [id]
         );
         return result.affectedRows > 0;
+    },
+
+    // Eliminar bloqueos vencidos (fecha_fin anterior a hoy)
+    async eliminarVencidos() {
+        const [result] = await pool.query(
+            'DELETE FROM bloqueos WHERE fecha_fin < CURDATE()'
+        );
+        return result.affectedRows;
     }
 };
 

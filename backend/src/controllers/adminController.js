@@ -111,7 +111,7 @@ const adminController = {
                 return res.status(404).json({ error: 'Servicio no encontrado' });
             }
             
-            res.json({ message: 'Servicio desactivado exitosamente' });
+            res.json({ message: 'Servicio eliminado exitosamente' });
         } catch (error) {
             console.error('Error al eliminar servicio:', error);
             res.status(500).json({ error: 'Error al eliminar servicio' });
@@ -180,10 +180,30 @@ const adminController = {
                 return res.status(404).json({ error: 'Empleado no encontrado' });
             }
             
-            res.json({ message: 'Empleado desactivado exitosamente' });
+            res.json({ message: 'Empleado eliminado exitosamente' });
         } catch (error) {
             console.error('Error al eliminar empleado:', error);
             res.status(500).json({ error: 'Error al eliminar empleado' });
+        }
+    },
+
+    async subirFotoEmpleado(req, res) {
+        try {
+            if (!req.file) {
+                return res.status(400).json({ error: 'No se ha proporcionado ningún archivo' });
+            }
+
+            // Generar URL relativa para guardar en la base de datos
+            const fotoUrl = `/uploads/empleados/${req.file.filename}`;
+
+            res.json({ 
+                message: 'Foto subida exitosamente',
+                url: fotoUrl,
+                filename: req.file.filename
+            });
+        } catch (error) {
+            console.error('Error al subir foto:', error);
+            res.status(500).json({ error: 'Error al subir la foto' });
         }
     },
 
@@ -209,6 +229,7 @@ const adminController = {
     async confirmarCita(req, res) {
         try {
             const { id } = req.params;
+            const cita = await Cita.obtenerPorId(id);
             const confirmada = await Cita.confirmar(id);
             
             if (!confirmada) {
@@ -323,6 +344,7 @@ const adminController = {
     async crearHorario(req, res) {
         try {
             const horarioId = await Horario.crear(req.body);
+
             res.status(201).json({ 
                 message: 'Horario creado exitosamente',
                 id: horarioId 
@@ -382,6 +404,7 @@ const adminController = {
     async crearBloqueo(req, res) {
         try {
             const bloqueoId = await Bloqueo.crear(req.body);
+
             res.status(201).json({ 
                 message: 'Bloqueo creado exitosamente',
                 id: bloqueoId 

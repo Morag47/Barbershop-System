@@ -148,11 +148,11 @@ ON DUPLICATE KEY UPDATE nombre = VALUES(nombre);
 
 -- Servicios de ejemplo
 INSERT INTO servicios (nombre, descripcion, precio) VALUES 
-('Corte de Cabello', 'Corte de cabello clásico con máquina y tijera', 25000.00),
-('Corte + Barba', 'Corte de cabello más arreglo de barba', 40000.00),
-('Afeitado Clásico', 'Afeitado tradicional con navaja y toalla caliente', 30000.00),
-('Corte Infantil', 'Corte de cabello para niños hasta 12 años', 20000.00),
-('Diseño de Barba', 'Diseño y perfilado de barba', 25000.00)
+('Corte de Cabello', 'Corte de cabello clásico con máquina y tijera. Incluye shampoo y masaje capilar relajante', 25000.00),
+('Corte + Barba', 'Corte de cabello más arreglo de barba completo. Incluye shampoo y masaje capilar relajante', 40000.00),
+('Afeitado Clásico', 'Afeitado tradicional con navaja, vapor facial, toalla caliente y aceites esenciales para un acabado suave y refrescante', 30000.00),
+('Corte Infantil', 'Corte de cabello para niños hasta 12 años. Incluye shampoo y masaje capilar relajante', 20000.00),
+('Diseño de Barba', 'Diseño y perfilado de barba con técnicas profesionales', 25000.00)
 ON DUPLICATE KEY UPDATE descripcion = VALUES(descripcion), precio = VALUES(precio);
 
 -- Horarios de trabajo (Lunes a Sábado para todos los barberos)

@@ -1,5 +1,6 @@
 import cron from 'node-cron';
 import Cita from '../models/Cita.js';
+import Bloqueo from '../models/Bloqueo.js';
 import { enviarRecordatorioWhatsApp } from '../services/whatsappService.js';
 
 export function iniciarCronJobs() {
@@ -55,7 +56,25 @@ export function iniciarCronJobs() {
         }
     });
 
+    // Ejecutar diariamente a las 3:00 AM para limpiar bloqueos vencidos
+    cron.schedule('0 3 * * *', async () => {
+        console.log('🔍 Limpiando bloqueos vencidos...');
+        
+        try {
+            const bloqueosEliminados = await Bloqueo.eliminarVencidos();
+            
+            if (bloqueosEliminados > 0) {
+                console.log(`✅ ${bloqueosEliminados} bloqueo(s) vencido(s) eliminado(s) automáticamente`);
+            } else {
+                console.log('✅ No hay bloqueos vencidos para eliminar');
+            }
+        } catch (error) {
+            console.error('❌ Error en cron job de limpieza de bloqueos:', error);
+        }
+    });
+
     console.log('✅ Cron jobs iniciados');
     console.log('⏰ Sistema de recordatorios activo');
     console.log('⚠️  Sistema de auto-cancelación activo');
+    console.log('🧹 Sistema de limpieza de bloqueos activo');
 }

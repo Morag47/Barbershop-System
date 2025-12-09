@@ -227,7 +227,12 @@ function GestionServicios() {
                 <tr key={servicio.id}>
                   <td>{servicio.id}</td>
                   <td style={{ fontWeight: '600' }}>{servicio.nombre}</td>
-                  <td style={{ maxWidth: '300px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <td style={{ 
+                    minWidth: '300px',
+                    whiteSpace: 'normal',
+                    wordWrap: 'break-word',
+                    lineHeight: '1.4'
+                  }}>
                     {servicio.descripcion || '-'}
                   </td>
                   <td>{servicio.duracion} min</td>

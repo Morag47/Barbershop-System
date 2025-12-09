@@ -16,6 +16,8 @@ function GestionEmpleados() {
     foto: '',
     activo: true
   });
+  const [archivoFoto, setArchivoFoto] = useState(null);
+  const [vistaPrevia, setVistaPrevia] = useState(null);
 
   const diasSemana = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
 
@@ -52,6 +54,32 @@ function GestionEmpleados() {
     });
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validar que sea una imagen
+      if (!file.type.startsWith('image/')) {
+        alert('Por favor selecciona un archivo de imagen válido (JPG, PNG, etc.)');
+        return;
+      }
+      
+      // Validar tamaño (máximo 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('La imagen no debe superar los 5MB');
+        return;
+      }
+      
+      setArchivoFoto(file);
+      
+      // Crear vista previa
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setVistaPrevia(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const limpiarForm = () => {
     setFormData({
       nombre: '',
@@ -59,6 +87,8 @@ function GestionEmpleados() {
       foto: '',
       activo: true
     });
+    setArchivoFoto(null);
+    setVistaPrevia(null);
     setEmpleadoEdit(null);
     setMostrarForm(false);
   };
@@ -66,11 +96,26 @@ function GestionEmpleados() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Si hay un archivo nuevo, subirlo primero
+      let fotoUrl = formData.foto;
+      if (archivoFoto) {
+        const formDataArchivo = new FormData();
+        formDataArchivo.append('foto', archivoFoto);
+        
+        const responseSubida = await empleadosAPI.subirFoto(formDataArchivo);
+        fotoUrl = responseSubida.data.url;
+      }
+      
+      const datosEmpleado = {
+        ...formData,
+        foto: fotoUrl
+      };
+      
       if (empleadoEdit) {
-        await empleadosAPI.actualizar(empleadoEdit.id, formData);
+        await empleadosAPI.actualizar(empleadoEdit.id, datosEmpleado);
         setMensaje('Empleado actualizado exitosamente');
       } else {
-        await empleadosAPI.crear(formData);
+        await empleadosAPI.crear(datosEmpleado);
         setMensaje('Empleado creado exitosamente');
       }
       cargarEmpleados();
@@ -89,6 +134,10 @@ function GestionEmpleados() {
       foto: empleado.foto || '',
       activo: empleado.activo
     });
+    // Si hay una foto existente, mostrarla como vista previa
+    if (empleado.foto) {
+      setVistaPrevia(`http://localhost:3000${empleado.foto}`);
+    }
     setMostrarForm(true);
   };
 
@@ -183,14 +232,34 @@ function GestionEmpleados() {
             </div>
             
             <div className="form-group">
-              <label>URL Foto (opcional)</label>
+              <label>Foto del Empleado (opcional)</label>
               <input
-                type="text"
-                name="foto"
-                value={formData.foto}
-                onChange={handleChange}
-                placeholder="https://ejemplo.com/foto.jpg"
+                type="file"
+                accept="image/jpeg,image/png,image/jpg"
+                onChange={handleFileChange}
+                style={{
+                  padding: '0.5rem',
+                  cursor: 'pointer'
+                }}
               />
+              <small style={{ color: 'var(--neutral-silver)', display: 'block', marginTop: '0.5rem' }}>
+                Formatos permitidos: JPG, PNG. Tamaño máximo: 5MB
+              </small>
+              {vistaPrevia && (
+                <div style={{ marginTop: '1rem' }}>
+                  <img 
+                    src={vistaPrevia} 
+                    alt="Vista previa" 
+                    style={{
+                      maxWidth: '200px',
+                      maxHeight: '200px',
+                      borderRadius: '8px',
+                      border: '2px solid var(--neutral-gray)',
+                      objectFit: 'cover'
+                    }}
+                  />
+                </div>
+              )}
             </div>
 
             <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -221,6 +290,7 @@ function GestionEmpleados() {
           <thead>
             <tr>
               <th>ID</th>
+              <th>Foto</th>
               <th>Nombre</th>
               <th>Cédula</th>
               <th>Estado</th>
@@ -230,7 +300,7 @@ function GestionEmpleados() {
           <tbody>
             {empleados.length === 0 ? (
               <tr>
-                <td colSpan="5" style={{ textAlign: 'center', padding: '2rem' }}>
+                <td colSpan="6" style={{ textAlign: 'center', padding: '2rem' }}>
                   No hay empleados registrados
                 </td>
               </tr>
@@ -239,6 +309,39 @@ function GestionEmpleados() {
                 <>
                   <tr key={empleado.id}>
                     <td>{empleado.id}</td>
+                    <td>
+                      {empleado.foto ? (
+                        <img 
+                          src={`http://localhost:3000${empleado.foto}`} 
+                          alt={empleado.nombre}
+                          style={{
+                            width: '50px',
+                            height: '50px',
+                            borderRadius: '50%',
+                            objectFit: 'cover',
+                            border: '2px solid var(--primary-gold)'
+                          }}
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'flex';
+                          }}
+                        />
+                      ) : null}
+                      <div style={{
+                        width: '50px',
+                        height: '50px',
+                        borderRadius: '50%',
+                        background: 'var(--neutral-gray)',
+                        display: empleado.foto ? 'none' : 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'var(--neutral-silver)',
+                        fontSize: '1.5rem',
+                        fontWeight: 'bold'
+                      }}>
+                        {empleado.nombre.charAt(0).toUpperCase()}
+                      </div>
+                    </td>
                     <td style={{ fontWeight: '600' }}>{empleado.nombre}</td>
                     <td>{empleado.cedula}</td>
                     <td>

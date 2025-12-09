@@ -2,6 +2,7 @@ import express from 'express';
 import adminController from '../controllers/adminController.js';
 import { verificarToken } from '../middleware/authMiddleware.js';
 import { body } from 'express-validator';
+import upload from '../config/multerConfig.js';
 
 const router = express.Router();
 
@@ -28,6 +29,7 @@ router.post('/empleados', [
 ], adminController.crearEmpleado);
 router.put('/empleados/:id', adminController.actualizarEmpleado);
 router.delete('/empleados/:id', adminController.eliminarEmpleado);
+router.post('/empleados/subir-foto', upload.single('foto'), adminController.subirFotoEmpleado);
 
 // ===== CITAS =====
 router.get('/citas', adminController.obtenerTodasCitas);

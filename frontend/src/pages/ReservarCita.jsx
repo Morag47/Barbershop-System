@@ -403,13 +403,49 @@ function ReservarCita() {
                       transform: formData.empleado_id === empleado.id.toString() ? 'scale(1.05)' : 'scale(1)'
                     }}
                   >
-                    <div style={{ 
-                      fontSize: '3.5rem', 
-                      marginBottom: '1rem',
-                      filter: formData.empleado_id === empleado.id.toString() ? 'grayscale(0%)' : 'grayscale(30%)'
-                    }}>
-                      {empleado.id === 0 ? '🎲' : '👨‍💼'}
-                    </div>
+                    {empleado.id === 0 ? (
+                      <div style={{ 
+                        fontSize: '3.5rem', 
+                        marginBottom: '1rem',
+                        filter: formData.empleado_id === empleado.id.toString() ? 'grayscale(0%)' : 'grayscale(30%)'
+                      }}>
+                        🎲
+                      </div>
+                    ) : empleado.foto ? (
+                      <img 
+                        src={`http://localhost:3000${empleado.foto}`} 
+                        alt={empleado.nombre}
+                        style={{
+                          width: '100px',
+                          height: '100px',
+                          borderRadius: '50%',
+                          objectFit: 'cover',
+                          margin: '0 auto 1rem',
+                          border: '3px solid ' + (formData.empleado_id === empleado.id.toString() ? 
+                            'var(--primary-gold)' : 'var(--neutral-gray)'),
+                          filter: formData.empleado_id === empleado.id.toString() ? 'grayscale(0%)' : 'grayscale(30%)'
+                        }}
+                      />
+                    ) : (
+                      <div style={{
+                        width: '100px',
+                        height: '100px',
+                        borderRadius: '50%',
+                        background: 'var(--neutral-gray)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: '0 auto 1rem',
+                        fontSize: '2.5rem',
+                        fontWeight: 'bold',
+                        color: 'var(--neutral-silver)',
+                        border: '3px solid ' + (formData.empleado_id === empleado.id.toString() ? 
+                          'var(--primary-gold)' : 'var(--neutral-gray)'),
+                        filter: formData.empleado_id === empleado.id.toString() ? 'grayscale(0%)' : 'grayscale(30%)'
+                      }}>
+                        {empleado.nombre.charAt(0).toUpperCase()}
+                      </div>
+                    )}
                     <h4 style={{ 
                       fontSize: '1.1rem',
                       color: formData.empleado_id === empleado.id.toString() ? 

@@ -13,6 +13,15 @@ const Horario = {
         return rows;
     },
 
+    // Obtener un horario por ID
+    async obtenerPorId(id) {
+        const [rows] = await pool.query(
+            'SELECT h.*, e.nombre as empleado_nombre FROM horarios h INNER JOIN empleados e ON h.empleado_id = e.id WHERE h.id = ?',
+            [id]
+        );
+        return rows[0];
+    },
+
     // Obtener horarios por empleado
     async obtenerPorEmpleado(empleadoId) {
         const [rows] = await pool.query(
